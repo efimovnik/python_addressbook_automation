@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
+from contact import Contact
 import unittest
 
 
@@ -87,8 +88,8 @@ class TestAddNewContact(unittest.TestCase):
         wd.find_element_by_name("byear").clear()
         wd.find_element_by_name("byear").send_keys("1995")
 
-        # Fill anniversary date
-        # Fill anniversary day
+        # Select anniversary date
+        # Select anniversary day
         wd.find_element_by_name("aday").click()
         Select(wd.find_element_by_name("aday")).select_by_visible_text("18")
         wd.find_element_by_name("aday").click()
@@ -119,7 +120,7 @@ class TestAddNewContact(unittest.TestCase):
 
     def confirm_group_creation(self, wd):
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
-        
+
     def logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
 
