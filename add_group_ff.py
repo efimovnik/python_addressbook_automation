@@ -3,13 +3,14 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-from contact import ContactInitials, ContactPhoto, ContactPhoneNumbers, ContactEmailsHomepage, ContactBirthdaysAnniversary, ContactGroup, ContactNotes
+from contact import ContactInitials, ContactPhoto, ContactPhoneNumbers, ContactEmailsHomepage, \
+    ContactBirthdaysAnniversary, ContactGroup, ContactNotes
 import unittest
 
 
 class TestAddNewContact(unittest.TestCase):
     def setUp(self):
-        self.wd = webdriver.Chrome()
+        self.wd = webdriver.Firefox()
         self.wd.implicitly_wait(30)
 
     def open_home_page(self, wd):
@@ -129,17 +130,22 @@ class TestAddNewContact(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.init_add_new_contact(wd)
-        self.fill_personal_information(wd, ContactInitials(firstname="Nickolay", middlename="Igorevich", lastname="Efimov",
-                                                           nickname="kolya", title="Title", company="Company", address="Address"))
+        self.fill_personal_information(wd,
+                                       ContactInitials(firstname="Nickolay", middlename="Igorevich", lastname="Efimov",
+                                                       nickname="kolya", title="Title", company="Company",
+                                                       address="Address"))
         self.attach_photo(wd, ContactPhoto("D:\\testpicture.jpg"))
         self.fill_phone_numbers(wd, ContactPhoneNumbers(home_phone="HomePhone", work_phone="MobilePhone",
                                                         mobile_phone="WorkPhone", fax_number="FaxNumber"))
         self.fill_emails_and_homepage(wd, ContactEmailsHomepage(email="email1@mail.ru", email2="email2@mail.ru",
                                                                 email3="email3@mail.ru", homepage="homepage.ru"))
-        self.select_birth_date(wd, ContactBirthdaysAnniversary(birth_day="17", birth_month="November", birth_year="1995",
-                                                               anniversary_day="18", anniversary_month="December", anniversary_year="1996"))
+        self.select_birth_date(wd,
+                               ContactBirthdaysAnniversary(birth_day="17", birth_month="November", birth_year="1995",
+                                                           anniversary_day="18", anniversary_month="December",
+                                                           anniversary_year="1996"))
         self.select_belonging_group(wd, ContactGroup(group="gav1"))
-        self.fill_secondary_information(wd, ContactNotes(address2="address", phone_number_2="HomeAddress", notes="Notes"))
+        self.fill_secondary_information(wd,
+                                        ContactNotes(address2="address", phone_number_2="HomeAddress", notes="Notes"))
         self.confirm_group_creation(wd)
         self.logout(wd)
 
@@ -150,26 +156,31 @@ class TestAddNewContact(unittest.TestCase):
         self.init_add_new_contact(wd)
         self.fill_personal_information(wd, ContactInitials(firstname="", middlename="", lastname="",
                                                            nickname="", title="", company="", address=""))
-        self.attach_photo(wd, ContactPhoto(""))
+       # self.attach_photo(wd, ContactPhoto(""))
         self.fill_phone_numbers(wd, ContactPhoneNumbers(home_phone="", work_phone="",
                                                         mobile_phone="", fax_number=""))
         self.fill_emails_and_homepage(wd, ContactEmailsHomepage(email="", email2="",
                                                                 email3="", homepage=""))
         self.select_birth_date(wd, ContactBirthdaysAnniversary(birth_day="", birth_month="-", birth_year="",
-                                                               anniversary_day="", anniversary_month="-", anniversary_year=""))
+                                                               anniversary_day="", anniversary_month="-",
+                                                               anniversary_year=""))
         self.select_belonging_group(wd, ContactGroup(group=""))
         self.fill_secondary_information(wd, ContactNotes(address2="", phone_number_2="", notes=""))
         self.confirm_group_creation(wd)
         self.logout(wd)
 
     def is_element_present(self, how, what):
-        try: self.wd.find_element(by=how, value=what)
-        except NoSuchElementException as e: return False
+        try:
+            self.wd.find_element(by=how, value=what)
+        except NoSuchElementException as e:
+            return False
         return True
-    
+
     def is_alert_present(self):
-        try: self.wd.switch_to_alert()
-        except NoAlertPresentException as e: return False
+        try:
+            self.wd.switch_to_alert()
+        except NoAlertPresentException as e:
+            return False
         return True
 
     def tearDown(self):
