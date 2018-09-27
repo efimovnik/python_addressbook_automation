@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-from contact import Contact
+from contact import ContactInitials, ContactPhoto, ContactPhoneNumbers, ContactEmailsHomepage, ContactBirthdaysAnniversary, ContactGroup, ContactNotes
 import unittest
 
 
@@ -15,108 +15,108 @@ class TestAddNewContact(unittest.TestCase):
     def open_home_page(self, wd):
         wd.get("http://localhost/addressbook/")
 
-    def login(self, wd):
+    def login(self, wd, username, password):
         wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
+        wd.find_element_by_name("user").send_keys(username)
         wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
+        wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
 
     def init_add_new_contact(self, wd):
         wd.find_element_by_link_text("add new").click()
 
-    def fill_personal_information(self, wd):
+    def fill_personal_information(self, wd, contact):
         # Fill Initials
         wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys("Nickolay")
+        wd.find_element_by_name("firstname").send_keys(contact.firstname)
         wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys("Igorevich")
+        wd.find_element_by_name("middlename").send_keys(contact.middlename)
         wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys("Efimov")
+        wd.find_element_by_name("lastname").send_keys(contact.lastname)
         # Fill Nickname
         wd.find_element_by_name("nickname").clear()
-        wd.find_element_by_name("nickname").send_keys("kolya")
+        wd.find_element_by_name("nickname").send_keys(contact.nickname)
         # Fill contact Title
         wd.find_element_by_name("title").clear()
-        wd.find_element_by_name("title").send_keys("Title")
+        wd.find_element_by_name("title").send_keys(contact.title)
         # Fill company name
         wd.find_element_by_name("company").clear()
-        wd.find_element_by_name("company").send_keys("Company")
+        wd.find_element_by_name("company").send_keys(contact.company)
         # Fill adress
         wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys("Address")
+        wd.find_element_by_name("address").send_keys(contact.address)
 
-    def attach_photo(self, wd):
-        wd.find_element_by_name("photo").send_keys("D:\\testpicture.jpg")
+    def attach_photo(self, wd, contact):
+        wd.find_element_by_name("photo").send_keys(contact.photo)
 
-    def fill_phone_numbers(self, wd):
+    def fill_phone_numbers(self, wd, contact):
         # Fill home number
         wd.find_element_by_name("home").clear()
-        wd.find_element_by_name("home").send_keys("HomePhone")
+        wd.find_element_by_name("home").send_keys(contact.home_phone)
         # Fill mobile number
         wd.find_element_by_name("mobile").clear()
-        wd.find_element_by_name("mobile").send_keys("MobilePhone")
+        wd.find_element_by_name("mobile").send_keys(contact.mobile_phone)
         # Fill work number
         wd.find_element_by_name("work").clear()
-        wd.find_element_by_name("work").send_keys("WorkPhone")
+        wd.find_element_by_name("work").send_keys(contact.work_phone)
         # Fill fax number
         wd.find_element_by_name("fax").clear()
-        wd.find_element_by_name("fax").send_keys("FaxNumber")
+        wd.find_element_by_name("fax").send_keys(contact.fax_number)
 
-    def fill_emails_and_homepage(self, wd):
+    def fill_emails_and_homepage(self, wd, contact):
         wd.find_element_by_name("email").clear()
-        wd.find_element_by_name("email").send_keys("email1@mail.ru")
+        wd.find_element_by_name("email").send_keys(contact.email)
         wd.find_element_by_name("email2").clear()
-        wd.find_element_by_name("email2").send_keys("email2@mail.ru")
+        wd.find_element_by_name("email2").send_keys(contact.email2)
         wd.find_element_by_name("email3").clear()
-        wd.find_element_by_name("email3").send_keys("email3@mail.ru")
+        wd.find_element_by_name("email3").send_keys(contact.email3)
         wd.find_element_by_name("homepage").clear()
-        wd.find_element_by_name("homepage").send_keys("homepage.ru")
+        wd.find_element_by_name("homepage").send_keys(contact.homepage)
 
-    def select_birth_date(self, wd):
+    def select_birth_date(self, wd, contact):
         # Fill bith date
         # Fill bith day
         wd.find_element_by_name("bday").click()
-        Select(wd.find_element_by_name("bday")).select_by_visible_text("17")
+        Select(wd.find_element_by_name("bday")).select_by_visible_text(contact.birth_day)
         wd.find_element_by_name("bday").click()
         # Fill bith month
         wd.find_element_by_name("bmonth").click()
-        Select(wd.find_element_by_name("bmonth")).select_by_visible_text("November")
+        Select(wd.find_element_by_name("bmonth")).select_by_visible_text(contact.birth_month)
         wd.find_element_by_name("bmonth").click()
         # Fill bith year
         wd.find_element_by_name("byear").click()
         wd.find_element_by_name("byear").clear()
-        wd.find_element_by_name("byear").send_keys("1995")
+        wd.find_element_by_name("byear").send_keys(contact.birth_year)
 
         # Select anniversary date
         # Select anniversary day
         wd.find_element_by_name("aday").click()
-        Select(wd.find_element_by_name("aday")).select_by_visible_text("18")
+        Select(wd.find_element_by_name("aday")).select_by_visible_text(contact.anniversary_day)
         wd.find_element_by_name("aday").click()
         # Fill anniversary month
         wd.find_element_by_name("amonth").click()
-        Select(wd.find_element_by_name("amonth")).select_by_visible_text("December")
+        Select(wd.find_element_by_name("amonth")).select_by_visible_text(contact.anniversary_month)
         wd.find_element_by_name("amonth").click()
         # Fill anniversary year
         wd.find_element_by_name("ayear").click()
         wd.find_element_by_name("ayear").clear()
-        wd.find_element_by_name("ayear").send_keys("1996")
+        wd.find_element_by_name("ayear").send_keys(contact.anniversary_year)
 
-    def select_belonging_group(self, wd):
+    def select_belonging_group(self, wd, contact):
         wd.find_element_by_name("new_group").click()
-        Select(wd.find_element_by_name("new_group")).select_by_visible_text("gav1")
+        Select(wd.find_element_by_name("new_group")).select_by_visible_text(contact.group)
         wd.find_element_by_name("new_group").click()
 
-    def fill_secondary_information(self, wd):
+    def fill_secondary_information(self, wd, contact):
         # Fill secondary address
         wd.find_element_by_name("address2").clear()
-        wd.find_element_by_name("address2").send_keys("address")
+        wd.find_element_by_name("address2").send_keys(contact.address2)
         # Fill secondary phone number
         wd.find_element_by_name("phone2").clear()
-        wd.find_element_by_name("phone2").send_keys("HomeAddress")
+        wd.find_element_by_name("phone2").send_keys(contact.phone_number_2)
         # Fill notes
         wd.find_element_by_name("notes").clear()
-        wd.find_element_by_name("notes").send_keys("Notes")
+        wd.find_element_by_name("notes").send_keys(contact.notes)
 
     def confirm_group_creation(self, wd):
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
@@ -127,15 +127,19 @@ class TestAddNewContact(unittest.TestCase):
     def test_add_contact(self):
         wd = self.wd
         self.open_home_page(wd)
-        self.login(wd)
+        self.login(wd, username="admin", password="secret")
         self.init_add_new_contact(wd)
-        self.fill_personal_information(wd)
-        self.attach_photo(wd)
-        self.fill_phone_numbers(wd)
-        self.fill_emails_and_homepage(wd)
-        self.select_birth_date(wd)
-        self.select_belonging_group(wd)
-        self.fill_secondary_information(wd)
+        self.fill_personal_information(wd, ContactInitials(firstname="Nickolay", middlename="Igorevich", lastname="Efimov",
+                                                           nickname="kolya", title="Title", company="Company", address="Address"))
+        self.attach_photo(wd, ContactPhoto("D:\\testpicture.jpg"))
+        self.fill_phone_numbers(wd, ContactPhoneNumbers(home_phone="HomePhone", work_phone="MobilePhone",
+                                                        mobile_phone="WorkPhone", fax_number="FaxNumber"))
+        self.fill_emails_and_homepage(wd, ContactEmailsHomepage(email="email1@mail.ru", email2="email2@mail.ru",
+                                                                email3="email3@mail.ru", homepage="homepage.ru"))
+        self.select_birth_date(wd, ContactBirthdaysAnniversary(birth_day="17", birth_month="November", birth_year="1995",
+                                                               anniversary_day="18", anniversary_month="December", anniversary_year="1996"))
+        self.select_belonging_group(wd, ContactGroup(group="gav1"))
+        self.fill_secondary_information(wd, ContactNotes(address2="address", phone_number_2="HomeAddress", notes="Notes"))
         self.confirm_group_creation(wd)
         self.logout(wd)
 
