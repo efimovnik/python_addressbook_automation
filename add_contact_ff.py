@@ -3,8 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-from contact import ContactInitials, ContactPhoto, ContactPhoneNumbers, ContactEmailsHomepage, \
-    ContactBirthdaysAnniversary, ContactGroup, ContactNotes
+from contact import Contact
 import unittest
 
 
@@ -46,11 +45,8 @@ class TestAddNewContact(unittest.TestCase):
         # Fill adress
         wd.find_element_by_name("address").clear()
         wd.find_element_by_name("address").send_keys(contact.address)
-
-    def attach_photo(self, wd, contact):
+        # Select photo
         wd.find_element_by_name("photo").send_keys(contact.photo)
-
-    def fill_phone_numbers(self, wd, contact):
         # Fill home number
         wd.find_element_by_name("home").clear()
         wd.find_element_by_name("home").send_keys(contact.home_phone)
@@ -63,18 +59,18 @@ class TestAddNewContact(unittest.TestCase):
         # Fill fax number
         wd.find_element_by_name("fax").clear()
         wd.find_element_by_name("fax").send_keys(contact.fax_number)
-
-    def fill_emails_and_homepage(self, wd, contact):
+        # Fill email
         wd.find_element_by_name("email").clear()
         wd.find_element_by_name("email").send_keys(contact.email)
+        # Fill email2
         wd.find_element_by_name("email2").clear()
         wd.find_element_by_name("email2").send_keys(contact.email2)
+        # Fill email3
         wd.find_element_by_name("email3").clear()
         wd.find_element_by_name("email3").send_keys(contact.email3)
+        # Fill homepage
         wd.find_element_by_name("homepage").clear()
         wd.find_element_by_name("homepage").send_keys(contact.homepage)
-
-    def select_birth_date(self, wd, contact):
         # Fill bith date
         # Fill bith day
         wd.find_element_by_name("bday").click()
@@ -102,13 +98,10 @@ class TestAddNewContact(unittest.TestCase):
         wd.find_element_by_name("ayear").click()
         wd.find_element_by_name("ayear").clear()
         wd.find_element_by_name("ayear").send_keys(contact.anniversary_year)
-
-    def select_belonging_group(self, wd, contact):
+        # Select belonging group
         wd.find_element_by_name("new_group").click()
         Select(wd.find_element_by_name("new_group")).select_by_visible_text(contact.group)
         wd.find_element_by_name("new_group").click()
-
-    def fill_secondary_information(self, wd, contact):
         # Fill secondary address
         wd.find_element_by_name("address2").clear()
         wd.find_element_by_name("address2").send_keys(contact.address2)
@@ -130,22 +123,16 @@ class TestAddNewContact(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.init_add_new_contact(wd)
-        self.fill_personal_information(wd,
-                                       ContactInitials(firstname="Nickolay", middlename="Igorevich", lastname="Efimov",
-                                                       nickname="kolya", title="Title", company="Company",
-                                                       address="Address"))
-        self.attach_photo(wd, ContactPhoto("D:\\testpicture.jpg"))
-        self.fill_phone_numbers(wd, ContactPhoneNumbers(home_phone="HomePhone", work_phone="MobilePhone",
-                                                        mobile_phone="WorkPhone", fax_number="FaxNumber"))
-        self.fill_emails_and_homepage(wd, ContactEmailsHomepage(email="email1@mail.ru", email2="email2@mail.ru",
-                                                                email3="email3@mail.ru", homepage="homepage.ru"))
-        self.select_birth_date(wd,
-                               ContactBirthdaysAnniversary(birth_day="17", birth_month="November", birth_year="1995",
-                                                           anniversary_day="18", anniversary_month="December",
-                                                           anniversary_year="1996"))
-        self.select_belonging_group(wd, ContactGroup(group="gav1"))
-        self.fill_secondary_information(wd,
-                                        ContactNotes(address2="address", phone_number_2="HomeAddress", notes="Notes"))
+        self.fill_personal_information(wd, Contact(firstname="Nickolay", middlename="Igorevich", lastname="Efimov",
+                                                   nickname="kolya", title="Title", company="Company",
+                                                   photo="D:\\testpicture.jpg", address="Address",
+                                                   home_phone="HomePhone", work_phone="MobilePhone",
+                                                   mobile_phone="WorkPhone", fax_number="FaxNumber",
+                                                   email="email1@mail.ru", email2="email2@mail.ru",
+                                                   email3="email3@mail.ru", homepage="homepage.ru", birth_day="17",
+                                                   birth_month="November", birth_year="1995", anniversary_day="18",
+                                                   anniversary_month="December", anniversary_year="1996", group="gav1",
+                                                   address2="address", phone_number_2="HomeAddress", notes="Notes"))
         self.confirm_group_creation(wd)
         self.logout(wd)
 
@@ -154,18 +141,12 @@ class TestAddNewContact(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.init_add_new_contact(wd)
-        self.fill_personal_information(wd, ContactInitials(firstname="", middlename="", lastname="",
-                                                           nickname="", title="", company="", address=""))
-       # self.attach_photo(wd, ContactPhoto(""))
-        self.fill_phone_numbers(wd, ContactPhoneNumbers(home_phone="", work_phone="",
-                                                        mobile_phone="", fax_number=""))
-        self.fill_emails_and_homepage(wd, ContactEmailsHomepage(email="", email2="",
-                                                                email3="", homepage=""))
-        self.select_birth_date(wd, ContactBirthdaysAnniversary(birth_day="", birth_month="-", birth_year="",
-                                                               anniversary_day="", anniversary_month="-",
-                                                               anniversary_year=""))
-        self.select_belonging_group(wd, ContactGroup(group=""))
-        self.fill_secondary_information(wd, ContactNotes(address2="", phone_number_2="", notes=""))
+        self.fill_personal_information(wd, Contact(firstname="", middlename="", lastname="", nickname="", title="",
+                                                   company="", photo="D:\\testpicture.jpg", address="", home_phone="", work_phone="",
+                                                   mobile_phone="", fax_number="", email="", email2="", email3="",
+                                                   homepage="", birth_day="", birth_month="-", birth_year="",
+                                                   anniversary_day="", anniversary_month="-", anniversary_year="",
+                                                   group="", address2="", phone_number_2="", notes=""))
         self.confirm_group_creation(wd)
         self.logout(wd)
 
