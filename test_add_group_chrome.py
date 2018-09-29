@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from group import Group
-from application import ApplicationChrome
+from application import Application
 import pytest
 
 
 @pytest.fixture
 def app(request):
-    fixture = ApplicationChrome()
+    fixture = Application()
     request.addfinalizer(fixture.destroy)
     return fixture
 

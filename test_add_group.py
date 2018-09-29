@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from group import Group
-from application import ApplicationFirefox
+from application import Application
 import pytest
 
 
 @pytest.fixture
 def app(request):
-    fixture = ApplicationFirefox()
+    fixture = Application()
     request.addfinalizer(fixture.destroy)
     return fixture
 
