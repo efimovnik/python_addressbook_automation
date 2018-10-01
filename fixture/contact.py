@@ -112,6 +112,15 @@ class ContactHelper:
         # submit delete contact
         wd.switch_to_alert().accept()
 
+    def delete_all_contacts(self):
+        wd = self.app.wd
+        # select all contacts
+        wd.find_element_by_id("MassCB").click()
+        # delete contact
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        # submit delete contact
+        wd.switch_to_alert().accept()
+
     def edit(self, contact):
         wd = self.app.wd
         # select first contact
