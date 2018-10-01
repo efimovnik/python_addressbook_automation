@@ -31,7 +31,6 @@ class Contact:
         self.phone_number_2 = phone_number_2
         self.notes = notes
 
-
 class ContactUpd:
 
     def __init__(self, firstname_upd, middlename_upd, lastname_upd, nickname_upd, title_upd, company_upd, address_upd, photo_upd,
