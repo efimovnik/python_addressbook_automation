@@ -33,10 +33,10 @@ class Contact:
 
 class ContactUpd:
 
-    def __init__(self, firstname_upd, middlename_upd, lastname_upd, nickname_upd, title_upd, company_upd, address_upd, photo_upd,
-                 home_phone_upd, work_phone_upd, mobile_phone_upd, fax_number_upd, email_upd, email2_upd, email3_upd,
-                 homepage_upd, birth_day_upd, birth_month_upd, birth_year_upd, anniversary_day_upd, anniversary_month_upd,
-                 anniversary_year_upd, address2_upd, phone_number_2_upd, notes_upd):
+    def __init__(self, firstname_upd=None, middlename_upd=None, lastname_upd=None, nickname_upd=None, title_upd=None, company_upd=None, address_upd=None, photo_upd=None,
+                 home_phone_upd=None, work_phone_upd=None, mobile_phone_upd=None, fax_number_upd=None, email_upd=None, email2_upd=None, email3_upd=None,
+                 homepage_upd=None, birth_day_upd=None, birth_month_upd=None, birth_year_upd=None, anniversary_day_upd=None, anniversary_month_upd=None,
+                 anniversary_year_upd=None, address2_upd=None, phone_number_2_upd=None, notes_upd=None):
         self.firstname_upd = firstname_upd
         self.middlename_upd = middlename_upd
         self.lastname_upd = lastname_upd
