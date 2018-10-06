@@ -16,15 +16,9 @@ class GroupHelper:
         # init group creation
         wd.find_element_by_name("new").click()
         # fill group form
-        wd.find_element_by_name("group_name").click()
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group.name)
-        wd.find_element_by_name("group_header").click()
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group.header)
-        wd.find_element_by_name("group_footer").click()
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group.footer)
+        self.change_field_name("group_name", group.name)
+        self.change_field_name("group_header", group.header)
+        self.change_field_name("group_footer", group.footer)
         # submit group creation
         wd.find_element_by_name("submit").click()
         # return to groups page
@@ -81,6 +75,11 @@ class GroupHelper:
         wd.find_element_by_name("update").click()
         # return to groups page
         self.return_to_groups_page()
+
+    def count(self):
+        wd = self.app.wd
+        self.open_groups_page()
+        return len(wd.find_elements_by_name("selected[]"))
 
     def return_to_groups_page(self):
         wd = self.app.wd
