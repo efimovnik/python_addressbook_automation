@@ -81,11 +81,15 @@ class GroupHelper:
         self.open_groups_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    def count_group_named(self, group_name):
+    def count_group_named(self, name):
         wd = self.app.wd
         self.app.open_home_page()
         self.open_groups_page()
-        return wd.find_element_by_name("selected[]").text == group_name
+        elements = wd.find_elements_by_name("selected[]")
+        for element in elements:
+            if element.text == name:
+                return
+        return len(elements)
 
 
     def return_to_groups_page(self):
