@@ -54,8 +54,7 @@ class ContactHelper:
 
     def delete_contact_in_details(self):
         wd = self.app.wd
-        # see details of first contact
-        wd.find_element_by_xpath("(//img[@alt='Details'])[2]").click()
+        self.see_details_of_contact()
         # modify contact
         wd.find_element_by_name("modifiy").click()
         # delete contact
@@ -123,7 +122,6 @@ class ContactHelper:
         self.app.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-
     def select_date(self, field_date_name, text):
         wd = self.app.wd
         if text is not None:
@@ -162,13 +160,16 @@ class ContactHelper:
 
     def edit_in_details(self, contact):
         wd = self.app.wd
-        # see details of first contact
-        wd.find_element_by_css_selector("img[alt=\"Details\"]").click()
+        self.see_details_of_contact()
         # modify contact
         wd.find_element_by_name("modifiy").click()
         self.fill_contact_form_without_group(contact)
         # Confirm editing creation of new contact
         wd.find_element_by_xpath("//input[@value='Update']").click()
+
+    def see_details_of_contact(self):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("img[alt=\"Details\"]").click()
 
     def confirm_contact_creation(self):
         wd = self.app.wd
