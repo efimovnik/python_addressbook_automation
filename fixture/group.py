@@ -67,10 +67,11 @@ class GroupHelper:
         wd = self.app.wd
         self.app.open_home_page()
         self.open_groups_page()
-        elements = wd.find_elements_by_name("selected[]")
+        elements = wd.find_elements_by_xpath("//*[@class='group']")
         for element in elements:
             if element.text == name:
-                return
+                return True
+        return False
 
     def return_to_groups_page(self):
         wd = self.app.wd
