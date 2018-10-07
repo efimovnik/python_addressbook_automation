@@ -7,18 +7,15 @@ class GroupHelper:
 
     def open_groups_page(self):
         wd = self.app.wd
-        # open groups page
-        wd.find_element_by_link_text("groups").click()
+        if not (wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
+            wd.find_element_by_link_text("groups").click()
 
     def create(self, group):
         wd = self.app.wd
         self.open_groups_page()
         # init group creation
         wd.find_element_by_name("new").click()
-        # fill group form
-        self.change_field_name("group_name", group.name)
-        self.change_field_name("group_header", group.header)
-        self.change_field_name("group_footer", group.footer)
+        self.fill_group_form(group)
         # submit group creation
         wd.find_element_by_name("submit").click()
         # return to groups page
@@ -33,17 +30,15 @@ class GroupHelper:
         # return to groups page
         self.return_to_groups_page()
 
-    def edit_first_group(self, group):
+    def modify_first_group(self, new_group_data):
         wd = self.app.wd
         self.open_groups_page()
         self.select_first_group()
         # init edit group
         wd.find_element_by_name("edit").click()
-        # fill edited group form
-        self.fill_group_form(group)
+        self.fill_group_form(new_group_data)
         # submit edit group
         wd.find_element_by_name("update").click()
-        # return to groups page
         self.return_to_groups_page()
 
     def change_field_name(self, field_name, text):
@@ -63,19 +58,6 @@ class GroupHelper:
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
 
-    def modify_first_group(self, new_group_data):
-        wd = self.app.wd
-        self.open_groups_page()
-        self.select_first_group()
-        # init edit group
-        wd.find_element_by_name("edit").click()
-        # fill edited group form
-        self.fill_group_form(new_group_data)
-        # submit edit group
-        wd.find_element_by_name("update").click()
-        # return to groups page
-        self.return_to_groups_page()
-
     def count(self):
         wd = self.app.wd
         self.open_groups_page()
@@ -89,9 +71,8 @@ class GroupHelper:
         for element in elements:
             if element.text == name:
                 return
-        return len(elements)
-
 
     def return_to_groups_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("group page").click()
+        if not (wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
+            wd.find_element_by_link_text("group page").click()
