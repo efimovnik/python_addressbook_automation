@@ -1,23 +1,32 @@
 # -*- coding: utf-8 -*-
-
 from model.group import Group
 
 def test_add_group(app):
     old_groups = app.group.get_group_list()
-    app.group.create(Group(name="gav2", header="gav3", footer="gav4"))
+    group = Group(name="gav2", header="gav3", footer="gav4")
+    app.group.create(group)
     new_groups = app.group.get_group_list()
     assert len(old_groups) + 1 == len(new_groups)
+    old_groups.append(group)
+    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
 
 def test_add_empty_group(app):
     old_groups = app.group.get_group_list()
-    app.group.create(Group(name="", header="", footer=""))
+    group = Group(name="", header="", footer="")
+    app.group.create(group)
     new_groups = app.group.get_group_list()
     assert len(old_groups) + 1 == len(new_groups)
+    old_groups.append(group)
+    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
 
 def test_add_contact_group(app):
     old_groups = app.group.get_group_list()
-    app.group.create(Group(name="contact_group", header="contact_group", footer="contact_group"))
+    group = Group(name="contact_group", header="contact_group", footer="contact_group")
+    app.group.create(group)
     new_groups = app.group.get_group_list()
     assert len(old_groups) + 1 == len(new_groups)
+    old_groups.append(group)
+    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+
