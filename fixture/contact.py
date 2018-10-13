@@ -24,6 +24,7 @@ class ContactHelper:
         self.init_add_new_contact()
         self.fill_contact_form(contact)
         self.confirm_contact_creation()
+        self.contact_cache = None
 
     def edit(self, contact):
         wd = self.app.wd
@@ -33,6 +34,7 @@ class ContactHelper:
         self.fill_contact_form_without_group(contact)
         # Confirm editing creation of new contact
         wd.find_element_by_name("update").click()
+        self.contact_cache = None
 
     def edit_in_details(self, contact):
         wd = self.app.wd
@@ -41,6 +43,7 @@ class ContactHelper:
         self.fill_contact_form_without_group(contact)
         # Confirm editing creation of new contact
         wd.find_element_by_xpath("//input[@value='Update']").click()
+        self.contact_cache = None
 
     def delete_contact_in_details(self):
         wd = self.app.wd
@@ -48,6 +51,7 @@ class ContactHelper:
         self.see_details_of_contact()
         self.init_modify_contact()
         self.click_delete_contact(wd)
+        self.contact_cache = None
 
     def delete_first_contact(self):
         wd = self.app.wd
@@ -56,6 +60,7 @@ class ContactHelper:
         self.click_delete_contact(wd)
         # submit delete contact
         wd.switch_to_alert().accept()
+        self.contact_cache = None
 
     def delete_contact_in_edit_form(self):
         wd = self.app.wd
@@ -63,6 +68,7 @@ class ContactHelper:
         self.select_first_contact()
         self.init_edit_contact()
         self.click_delete_contact(wd)
+        self.contact_cache = None
 
     def delete_all_contacts(self):
         wd = self.app.wd
@@ -71,6 +77,7 @@ class ContactHelper:
         self.click_delete_contact(wd)
         # submit delete contact
         wd.switch_to_alert().accept()
+        self.contact_cache = None
 
 # Assistive test methods
 
@@ -206,12 +213,15 @@ class ContactHelper:
             contacts.append(Contact(lastname=cells[1].text, firstname=cells[2].text, id=id))
         return contacts
 
+    contact_cache = None
+
     def get_contact_upd_list(self):
-        wd = self.app.wd
-        self.app.open_home_page()
-        contacts = []
-        for element in wd.find_elements_by_name("entry"):
-            cells = element.find_elements_by_tag_name("td")
-            id = element.find_element_by_name("selected[]").get_attribute("id")
-            contacts.append(ContactUpd(lastname_upd=cells[1].text, firstname_upd=cells[2].text, id=id))
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.app.open_home_page()
+            self.contact_cache = []
+            for element in wd.find_elements_by_name("entry"):
+                cells = element.find_elements_by_tag_name("td")
+                id = element.find_element_by_name("selected[]").get_attribute("id")
+                self.contact_cache.append(ContactUpd(lastname_upd=cells[1].text, firstname_upd=cells[2].text, id=id))
+        return list(self.contact_cache)

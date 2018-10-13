@@ -19,7 +19,7 @@ def test_edit_contact_in_details(app):
                          phone_number_2_upd="HomeAddress Edit Upd", notes_upd="Notes Edit Upd")
     contact.id = old_contacts[0].id
     app.contact.edit_in_details(contact)
+    assert len(old_contacts) == app.contact.count()
     new_contacts = app.contact.get_contact_upd_list()
-    assert len(old_contacts) == len(new_contacts)
     old_contacts[0] = contact
     assert sorted(old_contacts, key=ContactUpd.id_or_max) == sorted(new_contacts, key=ContactUpd.id_or_max)
