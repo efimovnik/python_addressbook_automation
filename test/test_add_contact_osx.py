@@ -4,10 +4,22 @@ from model.group import Group
 
 
 def test_add_contact(app):
-    if app.group.check_group_named("gav1") == False:
+    if not app.group.check_group_named("gav1"):
         app.group.create(Group(name="gav1"))
     app.open_home_page()
-    app.contact.create(Contact(firstname="Nickolay", middlename="Igorevich", lastname="Efimov", nickname="kolya", title="Title", company="Company", photo="/Users/nikolayefimov/Downloads/pictures pycharm/testpicture.jpg", address="Address", home_phone="HomePhone", work_phone="MobilePhone", mobile_phone="WorkPhone", fax_number="FaxNumber", email="email1@mail.ru", email2="email2@mail.ru", email3="email3@mail.ru", homepage="homepage.ru", birth_day="17", birth_month="November", birth_year="1995", anniversary_day="18", anniversary_month="December", anniversary_year="1996", group="gav1", address2="address", phone_number_2="HomeAddress", notes="Notes"))
+    old_contacts = app.contact.get_contact_list()
+    contact = Contact(firstname="Nickolay", middlename="Igorevich", lastname="Efimov", nickname="kolya", title="Title",
+                      company="Company", photo="/Users/nikolayefimov/Downloads/pictures pycharm/testpicture.jpg",
+                      address="Address", home_phone="HomePhone", work_phone="MobilePhone", mobile_phone="WorkPhone",
+                      fax_number="FaxNumber", email="email1@mail.ru", email2="email2@mail.ru", email3="email3@mail.ru",
+                      homepage="homepage.ru", birth_day="17", birth_month="November", birth_year="1995",
+                      anniversary_day="18", anniversary_month="December", anniversary_year="1996", group="gav1",
+                      address2="address", phone_number_2="HomeAddress", notes="Notes")
+    app.contact.create(contact)
+    new_contacts = app.contact.get_contact_list()
+    assert len(old_contacts) + 1 == len(new_contacts)
+    old_contacts.append(contact)
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
 
 def test_add_empty_contact(app):

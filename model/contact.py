@@ -1,9 +1,12 @@
+from sys import maxsize
+
+
 class Contact:
 
     def __init__(self, firstname=None, middlename=None, lastname=None, nickname=None, title=None, company=None, address=None, photo=None,
                  home_phone=None, work_phone=None, mobile_phone=None, fax_number=None, email=None, email2=None, email3=None,
                  homepage=None, birth_day=None, birth_month=None, birth_year=None, anniversary_day=None, anniversary_month=None,
-                 anniversary_year=None, group=None, address2=None, phone_number_2=None, notes=None):
+                 anniversary_year=None, group=None, address2=None, phone_number_2=None, notes=None, id=None):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
@@ -30,13 +33,27 @@ class Contact:
         self.address2 = address2
         self.phone_number_2 = phone_number_2
         self.notes = notes
+        self.id = id
+
+    def __repr__(self):
+            return "%s:%s:%s" % (self.id, self.firstname, self.lastname)
+
+    def __eq__(self, other):
+            return (self.id is None or other.id is None or self.id == other.id) and self.firstname == other.firstname \
+                   and self.lastname == other.lastname
+
+    def id_or_max(self):
+        if self.id:
+            return int(self.id)
+        else:
+            return maxsize
 
 class ContactUpd:
 
     def __init__(self, firstname_upd=None, middlename_upd=None, lastname_upd=None, nickname_upd=None, title_upd=None, company_upd=None, address_upd=None, photo_upd=None,
                  home_phone_upd=None, work_phone_upd=None, mobile_phone_upd=None, fax_number_upd=None, email_upd=None, email2_upd=None, email3_upd=None,
                  homepage_upd=None, birth_day_upd=None, birth_month_upd=None, birth_year_upd=None, anniversary_day_upd=None, anniversary_month_upd=None,
-                 anniversary_year_upd=None, address2_upd=None, phone_number_2_upd=None, notes_upd=None):
+                 anniversary_year_upd=None, address2_upd=None, phone_number_2_upd=None, notes_upd=None, id=None):
         self.firstname_upd = firstname_upd
         self.middlename_upd = middlename_upd
         self.lastname_upd = lastname_upd
@@ -62,3 +79,4 @@ class ContactUpd:
         self.address2_upd = address2_upd
         self.phone_number_2_upd = phone_number_2_upd
         self.notes_upd = notes_upd
+        self.id = id
