@@ -79,3 +79,16 @@ class ContactUpd:
         self.phone_number_2_upd = phone_number_2_upd
         self.notes_upd = notes_upd
         self.id = id
+
+    def __repr__(self):
+            return "%s:%s:%s" % (self.id, self.lastname_upd, self.firstname_upd)
+
+    def __eq__(self, other):
+            return (self.id is None or other.id is None or self.id == other.id) and self.lastname_upd == other.lastname_upd \
+                   and self.firstname_upd == other.firstname_upd
+
+    def id_or_max(self):
+        if self.id:
+            return int(self.id)
+        else:
+            return maxsize

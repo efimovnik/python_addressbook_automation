@@ -1,5 +1,5 @@
 from selenium.webdriver.support.ui import Select
-from model.contact import Contact
+from model.contact import Contact, ContactUpd
 
 
 class ContactHelper:
@@ -78,7 +78,7 @@ class ContactHelper:
         wd = self.app.wd
         self.change_contact_field("firstname", contact.firstname_upd)
         self.change_contact_field("middlename", contact.middlename_upd)
-        self.change_contact_field("lastname", contact.middlename_upd)
+        self.change_contact_field("lastname", contact.lastname_upd)
         self.change_contact_field("nickname", contact.nickname_upd)
         self.change_contact_field("title", contact.title_upd)
         self.change_contact_field("company", contact.company_upd)
@@ -204,4 +204,14 @@ class ContactHelper:
             cells = element.find_elements_by_tag_name("td")
             id = element.find_element_by_name("selected[]").get_attribute("id")
             contacts.append(Contact(lastname=cells[1].text, firstname=cells[2].text, id=id))
+        return contacts
+
+    def get_contact_upd_list(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        contacts = []
+        for element in wd.find_elements_by_name("entry"):
+            cells = element.find_elements_by_tag_name("td")
+            id = element.find_element_by_name("selected[]").get_attribute("id")
+            contacts.append(ContactUpd(lastname_upd=cells[1].text, firstname_upd=cells[2].text, id=id))
         return contacts
