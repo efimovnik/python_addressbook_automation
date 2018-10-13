@@ -105,7 +105,7 @@ class ContactHelper:
     def fill_contact_form(self, contact):
         self.change_contact_field("firstname", contact.firstname)
         self.change_contact_field("middlename", contact.middlename)
-        self.change_contact_field("lastname", contact.middlename)
+        self.change_contact_field("lastname", contact.lastname)
         self.change_contact_field("nickname", contact.nickname)
         self.change_contact_field("title", contact.title)
         self.change_contact_field("company", contact.company)
