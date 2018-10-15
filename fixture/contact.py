@@ -1,5 +1,6 @@
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact, ContactUpd
+from random import randrange
 
 
 class ContactHelper:
@@ -26,49 +27,62 @@ class ContactHelper:
         self.confirm_contact_creation()
         self.contact_cache = None
 
-    def edit(self, contact):
+    def edit_by_index(self, index, contact):
         wd = self.app.wd
         self.open_contacts_page()
-        self.select_first_contact()
-        self.init_edit_contact()
+        self.init_edit_contact_by_index(index)
         self.fill_contact_form_without_group(contact)
         # Confirm editing creation of new contact
         wd.find_element_by_name("update").click()
         self.contact_cache = None
 
-    def edit_in_details(self, contact):
+    def edit(self, contact):
+        self.edit_by_index(0, contact)
+
+    def edit_in_details_by_index(self, index, contact):
         wd = self.app.wd
-        self.see_details_of_contact()
+        self.see_details_of_contact_by_index(index)
         self.init_modify_contact()
         self.fill_contact_form_without_group(contact)
         # Confirm editing creation of new contact
         wd.find_element_by_xpath("//input[@value='Update']").click()
         self.contact_cache = None
 
+    def edit_in_details(self, contact):
+        self.edit_in_details_by_index(0, contact)
+
     def delete_contact_in_details(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_in_details_by_index(self, index):
         wd = self.app.wd
         self.open_contacts_page()
-        self.see_details_of_contact()
+        self.see_details_of_contact_by_index(index)
         self.init_modify_contact()
         self.click_delete_contact(wd)
         self.contact_cache = None
 
-    def delete_first_contact(self):
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.open_contacts_page()
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         self.click_delete_contact(wd)
         # submit delete contact
         wd.switch_to_alert().accept()
         self.contact_cache = None
 
-    def delete_contact_in_edit_form(self):
+    def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_in_edit_form_by_index(self, index):
         wd = self.app.wd
         self.open_contacts_page()
-        self.select_first_contact()
-        self.init_edit_contact()
+        self.init_edit_contact_by_index(index)
         self.click_delete_contact(wd)
         self.contact_cache = None
+
+    def delete_contact_in_edit_form(self):
+        self.delete_contact_in_edit_form_by_index(0)
 
     def delete_all_contacts(self):
         wd = self.app.wd
@@ -137,18 +151,12 @@ class ContactHelper:
         self.change_contact_field("notes", contact.notes)
         self.select_belonging_group(contact.group)
 
-    def transfer_contact_to_group(self, group_transfer):
-        wd = self.app.wd
-        self.select_first_contact()
-        # select group to transfer
-        wd.find_element_by_name("to_group").click()
-        Select(wd.find_element_by_name("to_group")).select_by_visible_text(group_transfer)
-        # submit add to group to transfer
-        wd.find_element_by_name("add").click()
-
     def select_first_contact(self):
+        self.select_contact_by_index(0)
+
+    def select_contact_by_index(self, index):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def click_delete_contact(self, wd):
         wd = self.app.wd
@@ -158,10 +166,13 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_name("modifiy").click()
 
-    def init_edit_contact(self):
+    def init_edit_contact_by_index(self, index):
         wd = self.app.wd
         if not len(wd.find_elements_by_name("update")) > 0:
-            wd.find_element_by_css_selector("img[alt=\"Edit\"]").click()
+            wd.find_elements_by_css_selector("img[alt=\"Edit\"]")[index].click()
+
+    def init_edit_contact(self):
+        self.init_edit_contact_by_index(0)
 
     def count(self):
         wd = self.app.wd
@@ -194,14 +205,41 @@ class ContactHelper:
             Select(wd.find_element_by_name("new_group")).select_by_visible_text(text)
             wd.find_element_by_name("new_group").click()
 
-    def see_details_of_contact(self):
+    def see_details_of_contact_by_index(self, index):
         wd = self.app.wd
         if not len(wd.find_elements_by_name("modifiy")) > 0:
-            wd.find_element_by_css_selector("img[alt=\"Details\"]").click()
+            wd.find_elements_by_css_selector("img[alt=\"Details\"]")[index].click()
+
+    def see_details_of_contact(self):
+        self.see_details_of_contact_by_index(0)
 
     def confirm_contact_creation(self):
         wd = self.app.wd
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+
+    def transfer_contact_to_group_by_index(self, index, group_transfer):
+        wd = self.app.wd
+        self.select_contact_by_index(index)
+        # select group to transfer
+        wd.find_element_by_name("to_group").click()
+        Select(wd.find_element_by_name("to_group")).select_by_visible_text(group_transfer)
+        # submit add to group to transfer
+        wd.find_element_by_name("add").click()
+
+    def transfer_contact_to_group(self):
+        wd = self.app.wd
+        self.transfer_contact_to_group_by_index(0)
+
+    def transfer_contact_to_group_by_group_index(self, index, index_group):
+        wd = self.app.wd
+        self.select_contact_by_index(index)
+        # select group to transfer
+        wd.find_element_by_name("to_group").click()
+        groups_for_transfer = self.get_groups_to_transfer_list()
+        index_group = randrange(len(groups_for_transfer))
+        Select(wd.find_elements_by_name("to_group")).select_by_visible_text(index_group_text)
+        # submit add to group to transfer
+        wd.find_element_by_name("add").click()
 
     def get_contact_list(self):
         wd = self.app.wd
@@ -225,3 +263,11 @@ class ContactHelper:
                 id = element.find_element_by_name("selected[]").get_attribute("id")
                 self.contact_cache.append(ContactUpd(lastname_upd=cells[1].text, firstname_upd=cells[2].text, id=id))
         return list(self.contact_cache)
+
+    def get_groups_to_transfer_list(self):
+        wd = self.app.wd
+        groups_to_transfer = []
+        for element in wd.find_element_by_name("to group"):
+            str = element.find_elements_by_tag_name("option")
+            groups_to_transfer.append(str.text)
+        return groups_to_transfer
