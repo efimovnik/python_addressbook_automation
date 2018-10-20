@@ -251,10 +251,13 @@ class ContactHelper:
         for element in wd.find_elements_by_name("entry"):
             cells = element.find_elements_by_tag_name("td")
             id = element.find_element_by_name("selected[]").get_attribute("id")
-            firstname = cells[2].text
             lastname = cells[1].text
+            firstname = cells[2].text
+            address = cells[3].text
+            all_emails = cells[4].text
             all_phones = cells[5].text
             contacts.append(Contact(lastname=lastname, firstname=firstname, id=id,
+                                    address=address, all_emails_from_homepage=all_emails,
                                     all_phones_from_homepage=all_phones))
         return contacts
 
@@ -268,9 +271,14 @@ class ContactHelper:
         work_phone = wd.find_element_by_name("work").get_attribute("value")
         mobile_phone = wd.find_element_by_name("mobile").get_attribute("value")
         phone_number_2 = wd.find_element_by_name("phone2").get_attribute("value")
+        email = wd.find_element_by_name("email").get_attribute("value")
+        email2 = wd.find_element_by_name("email2").get_attribute("value")
+        email3 = wd.find_element_by_name("email3").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
         return Contact(firstname=firstname, lastname=lastname, id=id,
                        home_phone=home_phone, work_phone=work_phone,
-                       mobile_phone=mobile_phone, phone_number_2=phone_number_2)
+                       mobile_phone=mobile_phone, phone_number_2=phone_number_2,
+                       email=email, email2=email2, email3=email3, address=address)
 
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
