@@ -14,7 +14,7 @@ def test_info_on_home_page(app):
 
 
 def clear(s):
-    return re.sub("[() -]", "", s)
+    return re.sub('[() - ! "]', '', s)
 
 
 def merge_phones_like_on_home_page(contact):

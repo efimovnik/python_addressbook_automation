@@ -13,7 +13,7 @@ def random_string(prefix, maxlen):
 testdata = [Group(name="", header="", footer="")] \
            + [Group(name="contact_group", header="contact_group", footer="contact_group")] \
            + [Group(name=random_string("gav2", 10), header=random_string("gav3", 20), footer=random_string("gav4", 15))
-            for name in range(5)
+           for i in range(5)
 ]
 
 
