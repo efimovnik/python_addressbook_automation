@@ -1,6 +1,6 @@
 import pymysql.cursors
 from model.group import Group
-from model.contact import Contact
+from model.contact import Contact, ContactUpd
 
 
 class DbFixture:
@@ -19,7 +19,7 @@ class DbFixture:
             cursor.execute("select group_id, group_name, group_header, group_footer from group_list")
             for row in cursor:
                 (id, name, header, footer) = row
-                list.append(Group(id=str(id), name=str(name), header=header, footer=footer))
+                list.append(Group(id=str(id), name=name, header=header, footer=footer))
         finally:
             cursor.close()
         return list
@@ -35,6 +35,36 @@ class DbFixture:
         finally:
             cursor.close()
         return list
+
+    def get_contact_upd_list(self):
+        list = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("select id, firstname, lastname from addressbook where deprecated='0000-00-00 00:00:00'")
+            for row in cursor:
+                (id, firstname, lastname) = row
+                list.append(ContactUpd(id=str(id), firstname_upd=firstname, lastname_upd=lastname))
+        finally:
+            cursor.close()
+        return list
+
+    def get_contacts_count(self):
+        return len(self.get_contact_list())
+
+    def get_groups_count(self):
+        return len(self.get_group_list())
+
+    def get_group_named(self, group_name):
+        list = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("select group_id, group_name, group_header, group_footer from group_list where group_name = '%s'" % (group_name))
+            for row in cursor:
+                (id, name, header, footer) = row
+                list.append(Group(id=str(id), name=str(name), header=header, footer=footer))
+        finally:
+            cursor.close()
+        return len(list)
 
     def destroy(self):
         self.connection.close()

@@ -37,12 +37,30 @@ class ContactHelper:
         wd.find_element_by_name("update").click()
         self.contact_cache = None
 
+    def edit_by_id(self, id, contact):
+        wd = self.app.wd
+        self.open_contacts_page()
+        self.init_edit_contact_by_id(id)
+        self.fill_contact_form_without_group(contact)
+        # Confirm editing creation of new contact
+        wd.find_element_by_name("update").click()
+        self.contact_cache = None
+
     def edit(self, contact):
         self.edit_by_index(0, contact)
 
     def edit_in_details_by_index(self, index, contact):
         wd = self.app.wd
         self.see_details_of_contact_by_index(index)
+        self.init_modify_contact()
+        self.fill_contact_form_without_group(contact)
+        # Confirm editing creation of new contact
+        wd.find_element_by_xpath("//input[@value='Update']").click()
+        self.contact_cache = None
+
+    def edit_in_details_by_id(self, id, contact):
+        wd = self.app.wd
+        self.see_details_of_contact_by_id(id)
         self.init_modify_contact()
         self.fill_contact_form_without_group(contact)
         # Confirm editing creation of new contact
@@ -63,10 +81,27 @@ class ContactHelper:
         self.click_delete_contact(wd)
         self.contact_cache = None
 
+    def delete_contact_in_details_by_id(self, id):
+        wd = self.app.wd
+        self.open_contacts_page()
+        self.see_details_of_contact_by_id(id)
+        self.init_modify_contact()
+        self.click_delete_contact(wd)
+        self.contact_cache = None
+
     def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.open_contacts_page()
         self.select_contact_by_index(index)
+        self.click_delete_contact(wd)
+        # submit delete contact
+        wd.switch_to_alert().accept()
+        self.contact_cache = None
+
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.open_contacts_page()
+        self.select_contact_by_id(id)
         self.click_delete_contact(wd)
         # submit delete contact
         wd.switch_to_alert().accept()
@@ -79,6 +114,13 @@ class ContactHelper:
         wd = self.app.wd
         self.open_contacts_page()
         self.init_edit_contact_by_index(index)
+        self.click_delete_contact(wd)
+        self.contact_cache = None
+
+    def delete_contact_in_edit_form_by_id(self, id):
+        wd = self.app.wd
+        self.open_contacts_page()
+        self.init_edit_contact_by_id(id)
         self.click_delete_contact(wd)
         self.contact_cache = None
 
@@ -159,6 +201,10 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
+
     def click_delete_contact(self, wd):
         wd = self.app.wd
         wd.find_element_by_xpath("//input[@value='Delete']").click()
@@ -172,6 +218,12 @@ class ContactHelper:
         self.app.open_home_page()
         if not len(wd.find_elements_by_name("update")) > 0:
             wd.find_elements_by_css_selector("img[alt=\"Edit\"]")[index].click()
+
+    def init_edit_contact_by_id(self, id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        if not len(wd.find_elements_by_name("update")) > 0:
+            wd.find_element_by_xpath('//a[@href="edit.php?id=%s"]' % id).click()
 
     def init_edit_contact(self):
         self.init_edit_contact_by_index(0)
@@ -212,6 +264,12 @@ class ContactHelper:
         self.app.open_home_page()
         if not len(wd.find_elements_by_name("modifiy")) > 0:
             wd.find_elements_by_css_selector("img[alt=\"Details\"]")[index].click()
+
+    def see_details_of_contact_by_id(self, id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        if not len(wd.find_elements_by_name("modifiy")) > 0:
+            wd.find_element_by_xpath('//a[@href="view.php?id=%s"]' % id).click()
 
     def see_details_of_contact(self):
         self.see_details_of_contact_by_index(0)

@@ -15,7 +15,7 @@ except getopt.GetoptError as err:
     sys.exit(2)
 
 
-n = 2
+n = 6
 f = "data/contacts.json"
 
 for o, a in opts:
