@@ -1,15 +1,21 @@
 from fixture.orm import ORMFixture
 from model.group import Group
+import random
 
 
-dbm = ORMFixture(host="127.0.0.1", name="addressbook", user="root", password="")
+db = ORMFixture(host="127.0.0.1", name="addressbook", user="root", password="")
 
-try:
-    l = dbm.get_group_named(Group(name="gav1"))
-    for item in l:
+
+l = db.get_contacts_in_group(Group(id='143'))
+contacts = db.get_contact_list()
+contact = random.choice(contacts)
+for item in l:
+    if item == contact:
+        print (contact)
         print (item)
-    print (len(l))
-finally:
-    pass # db.destroy()
-
+        print (len(l))
+        ok = []
+        ok.append(item)
+if len(ok) == 0:
+    raise AssertionError("There's no any contact in group id 69")
 

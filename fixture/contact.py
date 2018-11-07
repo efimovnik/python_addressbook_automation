@@ -287,6 +287,28 @@ class ContactHelper:
         # submit add to group to transfer
         wd.find_element_by_name("add").click()
 
+    def transfer_contact_to_group_by_id(self, id, group_transfer):
+        wd = self.app.wd
+        if not (wd.current_url.endswith("http://localhost/addressbook/")):
+            wd.find_element_by_link_text("home").click()
+        self.select_contact_by_id(id)
+        # select group to transfer
+        wd.find_element_by_name("to_group").click()
+        Select(wd.find_element_by_name("to_group")).select_by_visible_text(group_transfer)
+        # submit add to group to transfer
+        wd.find_element_by_name("add").click()
+
+    def remove_contact_from_group_by_id(self, id, group_remove):
+        wd = self.app.wd
+        if not (wd.current_url.endswith("http://localhost/addressbook/")):
+            wd.find_element_by_link_text("home").click()
+        # go to remove group
+        wd.find_element_by_name("group").click()
+        Select(wd.find_element_by_name("group")).select_by_visible_text(group_remove)
+        # select group to transfer
+        self.select_contact_by_id(id)
+        wd.find_element_by_name("remove").click()
+
     def transfer_contact_to_group(self):
         wd = self.app.wd
         self.transfer_contact_to_group_by_index(0)
