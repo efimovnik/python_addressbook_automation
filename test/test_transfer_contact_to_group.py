@@ -4,22 +4,32 @@ import random
 
 
 def test_transfer_contact_to_group(app, db):
+    # Check preconditions: contacts and groups exist
     if db.get_contacts_count() == 0:
        app.contact.create(Contact(middlename="test_edit_contact"))
-    if db.get_group_named("contact_group") == False:
+    if db.get_groups_count() == 0:
         app.group.create(Group(name="contact_group"))
+    # check precondition: at least one contact isn't in any group
+    groups = db.get_group_list()
+    for el in groups:
+        contacts_not_in_group = []
+        contacts_not_in_group.append(db.get_contacts_not_in_group(el.id))
+    if len(contacts_not_in_group) == 0:
+        app.contact.create(Contact(middlename="contact_not_in_group"))
+    # test transfer contact to group
     app.open_home_page()
-    contacts = db.get_contact_list()
-    contact = random.choice(contacts)
-    app.contact.transfer_contact_to_group_by_id(contact.id, "contact_group")
-    contacts_in_group = db.get_contacts_in_group(Group(id="145"))
+    groups = db.get_group_list()
+    for group in groups:
+        if len(db.get_contacts_not_in_group(group.id)) != 0:
+            contact = random.choice(db.get_contacts_not_in_group(group.id))
+    app.contact.transfer_contact_to_group_by_id(contact.id, group.name)
+    contacts_in_group = db.get_contacts_in_group(group.id)
     l = []
-    for contact_in_group in contacts_in_group:
-        if contact_in_group.id == contact.id:
-            l.append(contact_in_group.id)
+    for element in contacts_in_group:
+        if contact.id == element.id:
+            l.append(contact)
     if len(l) == 0:
-        raise AssertionError("There's no chosen contact in group 'contact_group'")
-
+        raise AssertionError("Contact not in group '%s'" % group.name)
 
 
 

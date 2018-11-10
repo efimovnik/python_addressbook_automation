@@ -305,7 +305,7 @@ class ContactHelper:
         # go to remove group
         wd.find_element_by_name("group").click()
         Select(wd.find_element_by_name("group")).select_by_visible_text(group_remove)
-        # select group to transfer
+        # select contact to remove from group
         self.select_contact_by_id(id)
         wd.find_element_by_name("remove").click()
 
