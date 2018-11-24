@@ -9,4 +9,4 @@ def test_group_list(app, db):
     print(timeit(lambda: map(clean, db.get_group_list()), number=1000))
     print(app.group.get_group_list())
     print(db.get_group_list())
-    assert False #(ui_list, key=Group.id_or_max) == sorted(db_list, key=Group.id_or_max)
+    #assert (ui_list, key=Group.id_or_max) == sorted(db_list, key=Group.id_or_max)

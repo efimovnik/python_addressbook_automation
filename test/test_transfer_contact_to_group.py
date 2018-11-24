@@ -11,9 +11,11 @@ def test_transfer_contact_to_group(app, db):
         app.group.create(Group(name="contact_group"))
     # check precondition: at least one contact isn't in any group
     groups = db.get_group_list()
+    contacts_not_in_group = []
     for el in groups:
-        contacts_not_in_group = []
-        contacts_not_in_group.append(db.get_contacts_not_in_group(el.id))
+        if len(db.get_contacts_not_in_group(el.id)) != 0:
+            contacts_not_in_group.append(db.get_contacts_not_in_group(el.id))
+    print(len(contacts_not_in_group))
     if len(contacts_not_in_group) == 0:
         app.contact.create(Contact(middlename="contact_not_in_group"))
     # test transfer contact to group
